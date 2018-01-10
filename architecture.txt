@@ -1,0 +1,45 @@
+*site
+-página para upload de imagem
+-uma página para mostrar resultados, podendo baixar a original, a processada pelo srcnn e a bicubica ( um botão para baixar cada imagem/mostrar as 3 imagens na  tela de resultados)
+-página para mostrar lista de resultados
+-uma imagem completamente uploadada fica com status 1 no db
+- pode adicionar uma descricao de srcnn para comparar os psnr
+
+*db(postgres... ou sqlite mesmo)
+-tabela controle
+id, nome_imagem, status
+
+--creio que desnecessárias
+-tabela imagem entrada
+id, nome_imagem_entrada, status, id_controle(fk)
+
+-tabela imagem processada srcnn
+id, nome_imagem_processada, id_controle(fk)
+
+-tabela imagem processada bicubic
+id, nome_bic, , id_controle(fk)
+
+-- scripts para controle de máquina de estado/lançar jobs/mover imagens --
+*script para mandar requisicoes para srcnn
+faz pool no db de 10 em 10 segundos para ver se há alguma imagem com status =1
+se estiver com status = 1, muda para 2 e lança a job para a nn
+
+*script para atualizar status da pesquisa
+faz pool na poasta de arquivos recém processados de 10 em 10 segundos para ver se há algum novo
+muda o status do mesmo de 2 para 3 e move o arquivo para a pasta/pastas finais
+
+-- estrutura de pastas --
+
+/srcnn/srcnn/.. - pastas com o srcnn
+/srcnn/webservice/... - pastas que armazenam o servidor
+/srcnn/etc/original/.. - pasta que contém as imagens originais
+/srcnn/etc/bicubic/.. - pasta que contém as imagens processadas bicubicas
+/srcnn/etc/nnprocessed/.. - pasta que contém as imagens processadas pela srcnn
+/srcnn/log/.. - qualquer log
+/srcnn/scripts/.. - scripts para alteração de estado no BD
+
+-- máquina de estado --
+0 - talvez nem tenha/imagem sendo uploadada
+1 - imagem mandada para o servidor
+2 - imagem comecou a ser processada
+3 - imagem processada

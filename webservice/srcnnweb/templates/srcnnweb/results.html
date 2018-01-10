@@ -1,0 +1,12 @@
+<!--<body>
+<h2>Lista de Resultados </h2>-->
+{ % if lista_imagens % }
+  <ul>
+  { % for imagem in lista_imagens % }
+    <li> <a href="/srcnnweb/results/{{ imagecontrol.id }}/">{{ imagecontrol.image_name }}</a></li>
+  { % endfor % }
+  </ul>
+{ % else % }
+  <p> Nenhuma imagem no DB </p>
+{ % endif % } 
+<!--</body>-->
