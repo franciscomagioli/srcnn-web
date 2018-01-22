@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+	<h1>Srcnn Web - Detalhes</h1>
+	<h3>{{ doc.document }}</h2>
+
+	Original:
+	<a href="{{ doc.document.url }}">{{ doc.document }}</a>
+	<br>
+	Bicubic:<a href="{{ bicubic.document.url }}">{{ bicubic.document }}</a>
+	<br>
+	Srcnn:<a href="{{ srcnn.document.url }}" >{{ srcnn.document }} </a>
+	<br>
+
+	<p><a href="{% url 'home' %}">Home</a></p>
+{% endblock %}
